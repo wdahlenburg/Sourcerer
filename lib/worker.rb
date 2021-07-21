@@ -26,12 +26,13 @@ class Worker
     @rules
   end
 
-  def run_rules(urls)
+  def run_rules(urls, recurse=false)
     urls.each do |url|
       puts "Running #{url}"
       begin
         # Turn each url into Url object
         u = Url.new(url)
+        run_rules(u.get_sub_folder_urls, false) if recurse == true
 
         i = 0
         while i < @rules.length

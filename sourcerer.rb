@@ -20,4 +20,4 @@ file_data.each do |line|
   urls.concat Dirsearch.parse_input(line)
 end
 
-worker.run_rules(urls)
+worker.run_rules(urls, true)

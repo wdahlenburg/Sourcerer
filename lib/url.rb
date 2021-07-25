@@ -5,6 +5,8 @@ require 'uri'
 
 # Helper url functions
 class Url
+  attr_reader :uri, :path
+
   def initialize(url)
     @uri = URI(url)
     @path = @uri.path
@@ -29,7 +31,6 @@ class Url
     if file?
       path = @path
 
-      i = @path.length
       while path != ''
         path_rev = path.reverse
         i = path_rev.index('/')

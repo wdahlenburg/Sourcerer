@@ -1,8 +1,6 @@
 #!/bin/ruby
 # frozen_string_literal: true
 
-require 'pry'
-
 class APIVersionFolder < Rule
   def self.initiate
     @desc = 'Accept directories matching /v{\d}/ syntax at whatever depth'

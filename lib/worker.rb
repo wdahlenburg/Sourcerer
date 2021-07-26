@@ -16,19 +16,21 @@ class Worker
   end
 
   def get_rules(config)
-    @rules = []
+    rules_set = []
 
-    config['matchers'].each do |m|
+    config['matchers']['rules'].each do |m|
       rule_set = []
       m['rule'].each do |rule|
         clazz = Kernel.const_get(rule)
         rule_set << clazz
       end
       condition = m['condition'] || 'or'
-      @rules << Rules.new(rule_set, condition)
+      rules_set << RulesSet.new(rule_set, condition)
     end
+    rules_condition = nil
+    rules_condition = config['matchers']['condition'] if config['matchers']['condition']
 
-    @rules
+    @rules = Rules.new(rules_set, rules_condition)
   end
 
   def run_rules(urls, recurse = false)
@@ -39,13 +41,8 @@ class Worker
         u = Url.new(url)
         run_rules(u.get_sub_folder_urls, false) if recurse == true
 
-        i = 0
-        while i < @rules.length
-          if @rules[i].evaluate(u)
-            Sidekiq::Client.push('class' => 'aggregator_urls', 'args' => [url], 'queue' => 'aggregator_urls')
-            break
-          end
-          i += 1
+        if @rules.evaluate(u)
+          Sidekiq::Client.push('class' => 'aggregator_urls', 'args' => [url], 'queue' => 'aggregator_urls')
         end
       rescue URI::InvalidURIError
         puts "Unable to parse #{url}"

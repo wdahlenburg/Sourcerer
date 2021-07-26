@@ -1,10 +1,8 @@
 redis-server: 192.168.1.15:6379
 matchers:
-  - rule:
-    - APIVersionFolder
-    - NonStandardPort
-    condition: and
-
-  - rule:
-    - FirstFolder
-    - SecondFolder
+  rules:
+    - rule:
+      - FirstFolder
+      - SecondFolder
+      - APIVersionFolder
+  condition: or

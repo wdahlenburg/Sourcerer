@@ -1,7 +1,7 @@
 #!/bin/ruby
 # frozen_string_literal: true
 
-# Generic class to define rules
+# Apply a condition across all rule sets
 class Rules
   def initialize(rules_set, condition='or')
     @rules_set = rules_set

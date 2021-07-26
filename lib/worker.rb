@@ -18,15 +18,20 @@ class Worker
   def get_rules(config)
     @rules = []
 
-    config['rules'].each do |rule|
-      clazz = Kernel.const_get(rule)
-      @rules << clazz
+    config['matchers'].each do |m|
+      rule_set = []
+      m['rule'].each do |rule|
+        clazz = Kernel.const_get(rule)
+        rule_set << clazz
+      end
+      condition = m['condition'] || 'or'
+      @rules << Rules.new(rule_set, condition)
     end
 
     @rules
   end
 
-  def run_rules(urls, recurse=false)
+  def run_rules(urls, recurse = false)
     urls.each do |url|
       puts "Running #{url}"
       begin

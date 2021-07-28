@@ -9,6 +9,9 @@ Dir[File.join('./lib/', '**/*.rb')].sort.each do |f|
   require f
 end
 
+args = ARGV
+args = %w[--help] if args.empty?
+
 options = {}
 option_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: sourcerer.rb [--dirsearch|--urls] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
@@ -25,13 +28,18 @@ option_parser = OptionParser.new do |opts|
   opts.on('--queue', '--queue[=QUEUE]', 'Redis Queue') do |q|
     options[:queue] = q
   end
+  opts.on('--disable-recurse', 'Disable folder recursion') do |r|
+    options[:disable_recurse] = r
+  end
   opts.on('--file', '--file=FILE', 'Input file') do |f|
     options[:file] = f
   end
-end.parse! %w[--help]
+end
+
+option_parser.parse! args
 
 if options[:file].nil? || (options[:urls].nil? && options[:dirsearch].nil?)
-  puts option_parser.help
+  puts option_parser.parse! %w[--help]
   exit 1
 end
 
@@ -61,4 +69,8 @@ elsif options[:urls]
   urls = file_data
 end
 
-worker.run_rules(urls, sidekiq_options, true)
+if options[:disable_recurse]
+  worker.run_rules(urls, sidekiq_options)
+else
+  worker.run_rules(urls, sidekiq_options, true)
+end

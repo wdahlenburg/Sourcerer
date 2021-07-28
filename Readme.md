@@ -67,21 +67,33 @@ You can specify the class and queue with the following arguments:
 $ ruby sourcerer.rb --urls --class=urls --queue=fuzzing_urls --file urls.txt
 ```
 
+#### Recursive Folder Lookup
+By default Sourcerer will perform a recursive lookup on folders and run the same rules against them. This results in the following paths being evaluated:
+
+```
+/api/v1/details/getDetails
+/api/v1/details/
+/api/v1/
+/api/
+```
+
+To disable this behavior add the `--disable-recurse` flag.
+
 ### FAQ
 
-*Why?*
+**Why?**
 
 Url filtering is a challenge to perform consistently with constantly changing needs. You may want to identify all of the urls with a query string for fuzzing. The next iteration you might want to identify all urls with '/api/' in their path and have a query string. 
 
-*What is Sidekiq?*
+**What is Sidekiq?**
 
 Sidekiq is a ruby gem that allows for Rails applications to process jobs as workers are added. You can read about it [here](https://github.com/mperham/sidekiq).
 
-*Why Sidekiq?*
+**Why Sidekiq?**
 
 Even if you aren't looking to learn Rails the Sidekiq syntax creates a languague interoperable syntax. This means that while this program will insert the data into Redis from Ruby you can use another language such as Python or Go to easily process the job. An example in Go is https://github.com/jrallison/go-workers/
 
-*Do you have details on Redis?*
+**Do you have details on Redis?**
 
 This program uses the queueing functionality of Redis, which allows for pushing and popping items to a queue. Redis runs in-memory, but regularly saves itself to disk so that it can be persistent across device reboots. Any client handling output from Sourcerer would likely want to use [LPOP](https://redis.io/commands/LPOP) to pop the left most item on the queue.
 

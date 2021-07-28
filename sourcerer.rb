@@ -13,7 +13,7 @@ options = {}
 option_parser = OptionParser.new do |opts|
   opts.banner = 'Usage: sourcerer.rb [--dirsearch|--urls] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
 
-  opts.on('--dirsearch', 'Ingest Dirsearch input') do |_d|
+  opts.on('--dirsearch', 'Ingest JSON Dirsearch input') do |_d|
     options[:dirsearch] = true
   end
   opts.on('--urls', 'Ingest urls input') do |_h|
@@ -28,7 +28,7 @@ option_parser = OptionParser.new do |opts|
   opts.on('--file', '--file=FILE', 'Input file') do |f|
     options[:file] = f
   end
-end.parse!
+end.parse! %w[--help]
 
 if options[:file].nil? || (options[:urls].nil? && options[:dirsearch].nil?)
   puts option_parser.help

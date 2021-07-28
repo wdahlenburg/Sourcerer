@@ -33,16 +33,16 @@ class Worker
     @rules = Rules.new(rules_set, rules_condition)
   end
 
-  def run_rules(urls, recurse = false)
+  def run_rules(urls, sidekiq_options, recurse = false)
     urls.each do |url|
       puts "Running #{url}"
       begin
         # Turn each url into Url object
         u = Url.new(url)
-        run_rules(u.get_sub_folder_urls, false) if recurse == true
+        run_rules(u.get_sub_folder_urls, sidekiq_options, false) if recurse == true
 
         if @rules.evaluate(u)
-          Sidekiq::Client.push('class' => 'aggregator_urls', 'args' => [url], 'queue' => 'aggregator_urls')
+          Sidekiq::Client.push('class' => sidekiq_options[:class], 'args' => [url], 'queue' => sidekiq_options[:queue])
         end
       rescue URI::InvalidURIError
         puts "Unable to parse #{url}"

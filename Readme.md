@@ -6,6 +6,8 @@ Sourcerer makes no assumptions about the HTTP request or response. It leaves you
 
 It will not evaluate urls in aggregate, so you should ensure input is unique and that any post-processing handles your assumptions appropriately.
 
+The config.yaml file is where you configure the redis server you wish to connect to. The rules syntax for filtering closely mirrors what can be seen in [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates/). You can currently apply a 'and', 'or', or 'not' condition against all rules and/or an individual rule set. This allows for complex conditions to be created that allow for you to get exactly the output you expect. 
+
 ### Examples
 
 Modify the `config.yaml` file with all of the rules you wish to run. A full list of rules can be found [here](lib/rules/).

@@ -14,8 +14,10 @@ class RulesSet
       @rules.all? { |r| r.evaluate(url) }
     when 'or'
       @rules.any? { |r| r.evaluate(url) }
+    when 'not'
+      !@rules.any? { |r| r.evaluate(url) }
     else
-      raise StandardError, 'Supported conditions (and, or)'
+      raise StandardError, 'Supported conditions (and, or, not)'
     end
   end
 end

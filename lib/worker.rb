@@ -27,10 +27,12 @@ class Worker
       condition = m['condition'] || 'or'
       rules_set << RulesSet.new(rule_set, condition)
     end
-    rules_condition = nil
-    rules_condition = config['matchers']['condition'] if config['matchers']['condition']
 
-    @rules = Rules.new(rules_set, rules_condition)
+    if config['matchers']['condition']
+      @rules = Rules.new(rules_set, config['matchers']['condition'])
+    else
+      @rules = Rules.new(rules_set)
+    end
   end
 
   def run_rules(urls, sidekiq_options, recurse = false)

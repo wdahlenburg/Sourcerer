@@ -14,7 +14,7 @@ args = %w[--help] if args.empty?
 
 options = {}
 option_parser = OptionParser.new do |opts|
-  opts.banner = 'Usage: sourcerer.rb [--dirsearch|--urls] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
+  opts.banner = 'Usage: sourcerer.rb [--config=config.yaml] [--dirsearch|--urls] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
 
   opts.on('--dirsearch', 'Ingest JSON Dirsearch input') do |_d|
     options[:dirsearch] = true
@@ -34,16 +34,20 @@ option_parser = OptionParser.new do |opts|
   opts.on('--file', '--file=FILE', 'Input file') do |f|
     options[:file] = f
   end
+  opts.on('--config', '--config=CONFIG', 'Config file') do |c|
+    options[:config] = c
+  end
 end
 
 option_parser.parse! args
+options[:config] ||= 'config.yaml'
 
 if options[:file].nil? || (options[:urls].nil? && options[:dirsearch].nil?)
   puts option_parser.parse! %w[--help]
   exit 1
 end
 
-config = YAML.load_file('config.yaml')
+config = YAML.load_file(options[:config])
 worker = Worker.new(config['redis-server'])
 worker.get_rules(config)
 
@@ -53,6 +57,7 @@ sidekiq_options = {
 }
 sidekiq_options[:class] ||= 'aggregator_urls'
 sidekiq_options[:queue] ||= 'aggregator_urls'
+
 
 urls = []
 

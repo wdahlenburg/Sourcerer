@@ -10,7 +10,7 @@ The config.yaml file is where you configure the redis server you wish to connect
 
 ### Examples
 
-Modify the `config.yaml` file with all of the rules you wish to run. A full list of rules can be found [here](lib/rules/).
+Modify the `config.yaml` file with all of the rules you wish to run. A full list of rules can be found [here](lib/rules/). You can also specify the `config.yaml` file via the `--config=config.yaml` flag.
 
 #### Extrapolate the first folder
 

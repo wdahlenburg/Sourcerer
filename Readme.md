@@ -81,6 +81,10 @@ By default Sourcerer will perform a recursive lookup on folders and run the same
 
 To disable this behavior add the `--disable-recurse` flag.
 
+#### Print only
+
+If you do not want to send the output into Redis then you can add the `--print-only` flag. The urls that match your rules will be passed to STDOUT. You can pipe the output to a file or directly to another tool.
+
 ### FAQ
 
 **Why?**

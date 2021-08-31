@@ -37,17 +37,21 @@ class Worker
 
   def run_rules(urls, sidekiq_options, recurse = false)
     urls.each do |url|
-      puts "Running #{url}"
+      STDERR.puts "Running #{url}"
       begin
         # Turn each url into Url object
         u = Url.new(url)
         run_rules(u.get_sub_folder_urls, sidekiq_options, false) if recurse == true
 
         if @rules.evaluate(u)
-          Sidekiq::Client.push('class' => sidekiq_options[:class], 'args' => [url], 'queue' => sidekiq_options[:queue])
+          if sidekiq_options[:print_only]
+            puts url
+          else
+            Sidekiq::Client.push('class' => sidekiq_options[:class], 'args' => [url], 'queue' => sidekiq_options[:queue])
+          end
         end
       rescue URI::InvalidURIError
-        puts "Unable to parse #{url}"
+        STDERR.puts "Unable to parse #{url}"
       end
     end
   end

@@ -14,7 +14,7 @@ args = %w[--help] if args.empty?
 
 options = {}
 option_parser = OptionParser.new do |opts|
-  opts.banner = 'Usage: sourcerer.rb [--config=config.yaml] [--dirsearch|--urls] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
+  opts.banner = 'Usage: sourcerer.rb [--config=config.yaml] [--dirsearch|--urls] [--print-only] [--class=aggregator_urls] [--queue=aggregator_urls] --file=<input_file>'
 
   opts.on('--dirsearch', 'Ingest JSON Dirsearch input') do |_d|
     options[:dirsearch] = true
@@ -37,6 +37,9 @@ option_parser = OptionParser.new do |opts|
   opts.on('--config', '--config=CONFIG', 'Config file') do |c|
     options[:config] = c
   end
+  opts.on('--print-only', 'Only print. Do not add to redis') do |_p|
+    options[:print_only] = true
+  end
 end
 
 option_parser.parse! args
@@ -51,13 +54,13 @@ config = YAML.load_file(options[:config])
 worker = Worker.new(config['redis-server'])
 worker.get_rules(config)
 
-sidekiq_options = {
+config_options = {
   class: options[:class],
-  queue: options[:queue]
+  queue: options[:queue],
+  print_only: options[:print_only]
 }
-sidekiq_options[:class] ||= 'aggregator_urls'
-sidekiq_options[:queue] ||= 'aggregator_urls'
-
+config_options[:class] ||= 'aggregator_urls'
+config_options[:queue] ||= 'aggregator_urls'
 
 urls = []
 
@@ -75,7 +78,7 @@ elsif options[:urls]
 end
 
 if options[:disable_recurse]
-  worker.run_rules(urls, sidekiq_options)
+  worker.run_rules(urls, config_options)
 else
-  worker.run_rules(urls, sidekiq_options, true)
+  worker.run_rules(urls, config_options, true)
 end

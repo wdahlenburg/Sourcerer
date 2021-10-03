@@ -7,6 +7,6 @@ class MP4Extension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.mp4'
+    url.uri.path.downcase.end_with? '.mp4'
   end
 end

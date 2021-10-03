@@ -7,6 +7,6 @@ class ICOExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.ico'
+    url.uri.path.downcase.end_with? '.ico'
   end
 end

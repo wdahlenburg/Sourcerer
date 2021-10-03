@@ -7,6 +7,6 @@ class EOTExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.eot'
+    url.uri.path.downcase.end_with? '.eot'
   end
 end

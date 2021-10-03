@@ -7,6 +7,6 @@ class SVGExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.svg'
+    url.uri.path.downcase.end_with? '.svg'
   end
 end

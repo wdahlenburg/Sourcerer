@@ -7,6 +7,6 @@ class MP3Extension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.mp3'
+    url.uri.path.downcase.end_with? '.mp3'
   end
 end

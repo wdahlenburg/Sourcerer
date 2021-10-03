@@ -7,6 +7,6 @@ class PNGExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.png'
+    url.uri.path.downcase.end_with? '.png'
   end
 end

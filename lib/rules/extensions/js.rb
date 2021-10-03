@@ -7,6 +7,6 @@ class JSExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.js'
+    url.uri.path.downcase.end_with? '.js'
   end
 end

@@ -7,6 +7,6 @@ class JPGExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.jpg' or url.uri.path.end_with? '.jpeg'
+    url.uri.path.downcase.end_with? '.jpg' or url.uri.path.downcase.end_with? '.jpeg'
   end
 end

@@ -7,6 +7,6 @@ class CSSExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.css'
+    url.uri.path.downcase.end_with? '.css'
   end
 end

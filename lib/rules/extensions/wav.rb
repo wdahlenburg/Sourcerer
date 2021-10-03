@@ -7,6 +7,6 @@ class WAVExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.wav'
+    url.uri.path.downcase.end_with? '.wav'
   end
 end

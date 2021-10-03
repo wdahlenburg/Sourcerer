@@ -7,6 +7,6 @@ class PDFExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.pdf'
+    url.uri.path.downcase.end_with? '.pdf'
   end
 end

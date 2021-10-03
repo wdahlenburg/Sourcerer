@@ -7,6 +7,6 @@ class TTFExtension < Rule
   end
 
   def self.evaluate(url)
-    url.uri.path.end_with? '.ttf'
+    url.uri.path.downcase.end_with? '.ttf'
   end
 end

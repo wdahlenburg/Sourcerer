@@ -28,18 +28,16 @@ class Url
   def get_sub_folder_urls
     base_url = get_url(@uri, '/')
     urls = []
-    if file?
-      path = @path
+    path = dir? ? @path.chomp('/') : @path
 
-      while path != ''
-        path_rev = path.reverse
-        i = path_rev.index('/')
-        new_path = path_rev.slice(i, path.length).reverse
-        t_url = get_url(@uri, new_path)
+    while path != ''
+      path_rev = path.reverse
+      i = path_rev.index('/')
+      new_path = path_rev.slice(i, path.length).reverse
+      t_url = get_url(@uri, new_path)
 
-        urls << t_url if !urls.include?(t_url) && (t_url != base_url)
-        path = new_path.slice(0, new_path.length - 1)
-      end
+      urls << t_url if !urls.include?(t_url) && (t_url != base_url)
+      path = new_path.slice(0, new_path.length - 1)
     end
     urls
   end

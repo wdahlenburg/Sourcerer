@@ -1,8 +1,12 @@
-redis-server: 127.0.0.1:6379
+redis:
+  host: 127.0.0.1:6379
 matchers:
   rules:
     - rule:
-      - FirstFolder
-      - SecondFolder
       - APIVersionFolder
-      condition: or
+      - NoComma
+      condition: and
+
+    - rule:
+      - ShortFolder
+  condition: and

@@ -15,7 +15,8 @@ Modify the `config.yaml` file with all of the rules you wish to run. A full list
 #### Extrapolate the first folder
 
 ```yaml
-redis-server: 127.0.0.1:6379
+redis:
+  host: 127.0.0.1:6379
 matchers:
   rules:
     - rule:
@@ -25,7 +26,8 @@ matchers:
 #### Grab all content on a non standard port without extra content
 
 ```yaml
-redis-server: 127.0.0.1:6379
+redis:
+  host: 127.0.0.1:6379
 matchers:
   rules:
     - rule:

@@ -51,7 +51,7 @@ if options[:file].nil? || (options[:urls].nil? && options[:dirsearch].nil?)
 end
 
 config = YAML.load_file(options[:config])
-worker = Worker.new(config['redis-server'])
+worker = Worker.new(RedisConfig.new(config['redis']))
 worker.get_rules(config)
 
 config_options = {

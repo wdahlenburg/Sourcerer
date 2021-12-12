@@ -5,13 +5,13 @@ require 'sidekiq'
 include Sidekiq::Worker
 
 class Worker
-  def initialize(server)
+  def initialize(redisConfig)
     Sidekiq.configure_server do |config|
-      config.redis = { url: "redis://#{server}/0" }
+      config.redis = redisConfig.generateSidekiqConfig
     end
 
     Sidekiq.configure_client do |config|
-      config.redis = { url: "redis://#{server}/0" }
+      config.redis = redisConfig.generateSidekiqConfig
     end
   end
 

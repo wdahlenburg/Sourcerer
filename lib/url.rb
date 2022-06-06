@@ -33,6 +33,7 @@ class Url
     while path != ''
       path_rev = path.reverse
       i = path_rev.index('/')
+      break if i.nil?
       new_path = path_rev.slice(i, path.length).reverse
       t_url = get_url(@uri, new_path)
 

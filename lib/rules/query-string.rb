@@ -7,6 +7,6 @@ class QueryString < Rule
   end
 
   def self.evaluate(url)
-    !url.uri.query.nil?
+    !url.uri.query.nil? && !url.uri.query.empty?
   end
 end

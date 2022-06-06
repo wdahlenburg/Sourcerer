@@ -52,6 +52,7 @@ class Worker
         end
       rescue URI::InvalidURIError
         STDERR.puts "Unable to parse #{url}"
+        next
       end
     end
   end
